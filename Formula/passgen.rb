@@ -1,9 +1,9 @@
 class Passgen < Formula
-  desc "Generate random, phonetic, and patterned passwords"
+  desc "Generate passwords and memorable passphrases offline"
   homepage "https://github.com/kxrxh/passgen"
-  url "https://github.com/kxrxh/passgen/archive/refs/tags/v0.1.0.tar.gz"
-  sha256 "3dd1c0ff3848580c5e1b715b2e85d3865b989d5663ce58a4385d32971111bae3"
-  license "MIT"
+  url "https://github.com/kxrxh/passgen/archive/refs/tags/v0.2.0.tar.gz"
+  sha256 "5c73baea04b6a70384ba9788c42ea307b5dba15fe105cb73d49823ea57039516"
+  license all_of: ["MIT", "CC-BY-4.0"]
 
   depends_on "rust" => :build
 
@@ -15,9 +15,15 @@ class Passgen < Formula
 
   def install
     system "cargo", "install", *std_cargo_args
+    pkgshare.install "data/README.md" => "wordlist-attribution.md"
   end
 
   test do
+    assert_equal "passgen #{version}", shell_output("#{bin}/passgen --version").strip
     assert_match(/\A[A-Z]{2}[a-z]{2}\d{2}\z/, shell_output("#{bin}/passgen --pattern UULLDD").strip)
+    assert_match(/\A[a-z]+(?:-[a-z]+){5}\z/, shell_output("#{bin}/passgen --words 6").strip)
+    result = JSON.parse(shell_output("#{bin}/passgen --words 6 --count 2 --json"))
+    assert_equal 2, result.fetch("count")
+    assert_equal 2, result.fetch("passwords").length
   end
 end
