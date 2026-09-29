@@ -1,18 +1,12 @@
-# Kxrxh Tap
+# Homebrew tap for PassGen
 
-## How do I install these formulae?
+[PassGen](https://github.com/kxrxh/passgen) is a command-line password generator.
 
-`brew install kxrxh/tap/<formula>`
+Install it with:
 
-Or `brew tap kxrxh/tap` and then `brew install <formula>`.
-
-Or, in a `brew bundle` `Brewfile`:
-
-```ruby
-tap "kxrxh/tap"
-brew "<formula>"
+```bash
+brew install kxrxh/tap/passgen
 ```
 
-## Documentation
-
-`brew help`, `man brew` or check [Homebrew's documentation](https://docs.brew.sh).
+The formula builds the tagged source release using Rust. To update it for a new
+release, change the versioned URL and SHA-256 checksum in `Formula/passgen.rb`.
